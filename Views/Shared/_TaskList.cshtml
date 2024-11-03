@@ -1,0 +1,9 @@
+﻿@model IEnumerable<TodoApplication.Models.TodoItem>
+
+<table class="table table-responsive text-center">
+
+    @TodoApplication.Helpers.TodoHelpers.ItemTableHeader()
+
+    @TodoApplication.Helpers.TodoHelpers.ItemTableRow(Html,Model)
+
+</table>

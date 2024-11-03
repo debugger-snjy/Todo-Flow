@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            @Html.ActionLink("TodoFlow App", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("All Tasks", "Index", "Todo", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Add Task", "Create", "Todo", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <div class="position-absolute w-100 bottom-0 p-1 d-flex justify-content-between fw-bold" style="background-color: #212529; color: white;">
+        <div class="flex-fill" id="currentDatTime"></div>
+        @{
+            TodoApplication.Models.DataContext.ContextData obj = new TodoApplication.Models.DataContext.ContextData();
+
+            <div class="" style="padding-right:20px;color:lime" >Completed : @obj.Todos.Count(model => model.IsCompleted == true)</div>
+            <div class="" style="padding-right:20px;color:red">Remaining : @obj.Todos.Count(model => model.IsCompleted == false)</div>
+
+        }
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        var timerElement = document.getElementById("currentDatTime");
+
+        setInterval(function () {
+            // Get the current date and time
+            var currentDate = new Date(Date.now());
+
+            // Define months array for month names
+            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            // Get the components of the date and time
+            var day = currentDate.getDate();
+            var month = months[currentDate.getMonth()];
+            var year = currentDate.getFullYear();
+            var hours = currentDate.getHours();
+            var minutes = currentDate.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert hours to 12-hour format
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+
+            // Add leading zeros to minutes if necessary
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            var second = currentDate.getSeconds() > 9 ? currentDate.getSeconds() : "0" + currentDate.getSeconds();
+
+            // Construct the formatted string
+            var formattedDate = day + ' ' + month + ' ' + year + ' ' + hours + ':' + minutes + ':' + second + ' ' + ampm;
+
+            timerElement.innerHTML = formattedDate;
+
+        }, 1000);
+    </script>
+
+</body>
+</html>

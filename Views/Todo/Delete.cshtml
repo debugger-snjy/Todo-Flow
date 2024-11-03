@@ -1,0 +1,66 @@
+﻿@model TodoApplication.Models.TodoItem
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><strong>Delete TodoItem</strong></h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Task)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskUpdated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskCompletionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskCompletionDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger p-2 mt-2" />
+            @Html.ActionLink("Back to List", "Index", null, null, new { @class = "text-decoration-none text-white btn btn-dark p-2 mt-2" })
+
+        </div>
+    }
+</div>

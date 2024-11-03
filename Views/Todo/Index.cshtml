@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TodoApplication.Models.TodoItem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<main>
+
+
+    <!-- Alert Message -->
+    <div class="alert alert-success alert-dismissible fade show" id="successalertBox" role="alert">
+        <strong>@TempData["alertMsg"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="alert alert-warning alert-dismissible fade show" id="warningalertBox" role="alert">
+        <strong>@TempData["alertMsg"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Alert Message -->
+    <div class="alert alert-danger alert-dismissible fade show" id="dangeralertBox" role="alert">
+        <strong>@TempData["alertMsg"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+    <h2 class="mb-4">Your Tasks</h2>
+
+    @*Using the Partial View*@
+    @*@Html.Partial("_TaskList", Model.Where(model => model.IsCompleted == false))*@
+    @Html.Partial("_TaskList", Model)
+
+    <h2 class="mb-4">
+        @*Your Remaining Tasks*@
+</h2>
+
+
+<p class="w-25 d-block mx-auto" style="height:60px">
+    @Html.ActionLink("Create New", "Create", null, null, new { @class = "text-decoration-none text-white d-block btn btn-dark p-2 fs-5 fw-bold" })
+</p>
+
+</main>
+
+<script>
+    $(document).ready(function () {
+        $('#successalertBox').hide();
+        $('#dangeralertBox').hide();
+        $('#warningalertBox').hide();
+
+        var alertMsg = "@TempData["alertMsg"]";
+        var alertType = "@TempData["alertType"]";
+
+        if (alertMsg && alertType) {
+            if (alertType === "success") {
+                $('#successalertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            }
+            else if (alertType === "warning") {
+                $('#warningalertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            }
+            else {
+                $('#dangeralertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            }
+        }
+
+        $('.completed').each(function () {
+            console.log(this)
+        });
+
+        // Your jQuery code here
+        $('#taskCompBtn').click(function () {
+            var itemId = $(this).data('id');
+            var status;
+
+            if ($(this).hasClass("completed")) {
+                status = true;
+            }
+            else {
+                status = false;
+            }
+
+            $.ajax({
+                url: '/Todo/TaskStatus/' + parseInt(itemId) + "/Status/" + status,
+                type: 'POST'
+            });
+        });
+    });
+</script>
